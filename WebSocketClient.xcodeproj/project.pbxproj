@@ -3,10 +3,18 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C5533862671B1470083A2E9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5533852671B1470083A2E9 /* User.swift */; };
+		5C55338D2671FAEF0083A2E9 /* MessageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C55338C2671FAEF0083A2E9 /* MessageData.swift */; };
+		5C55338F267250750083A2E9 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C55338E267250750083A2E9 /* Message.swift */; };
+		5C55339226725B170083A2E9 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C55339126725B170083A2E9 /* MessageCell.swift */; };
+		5C55339426725B310083A2E9 /* SendMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C55339326725B310083A2E9 /* SendMessageCell.swift */; };
+		5C55339626725B4D0083A2E9 /* ReceiveMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C55339526725B4D0083A2E9 /* ReceiveMessageCell.swift */; };
+		5C55339826725BCB0083A2E9 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C55339726725BCB0083A2E9 /* Response.swift */; };
+		5C55339A26725F230083A2E9 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C55339926725F230083A2E9 /* Utils.swift */; };
 		5C7CE2532670B46300BE7FF7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7CE2522670B46300BE7FF7 /* AppDelegate.swift */; };
 		5C7CE2552670B46300BE7FF7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7CE2542670B46300BE7FF7 /* SceneDelegate.swift */; };
 		5C7CE2572670B46300BE7FF7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7CE2562670B46300BE7FF7 /* ViewController.swift */; };
@@ -15,6 +23,9 @@
 		5C7CE25F2670B46D00BE7FF7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C7CE25D2670B46D00BE7FF7 /* LaunchScreen.storyboard */; };
 		5C7CE26A2670B46E00BE7FF7 /* WebSocketClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7CE2692670B46E00BE7FF7 /* WebSocketClientTests.swift */; };
 		5C7CE2752670B46E00BE7FF7 /* WebSocketClientUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7CE2742670B46E00BE7FF7 /* WebSocketClientUITests.swift */; };
+		5C7CE2842670C21B00BE7FF7 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5C7CE2832670C21B00BE7FF7 /* SnapKit */; };
+		5C7CE2872670C70C00BE7FF7 /* UIStackView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7CE2852670C70C00BE7FF7 /* UIStackView+Extension.swift */; };
+		5C7CE2882670C70C00BE7FF7 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7CE2862670C70C00BE7FF7 /* UIView+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +46,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5C5533852671B1470083A2E9 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		5C55338C2671FAEF0083A2E9 /* MessageData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageData.swift; sourceTree = "<group>"; };
+		5C55338E267250750083A2E9 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		5C55339126725B170083A2E9 /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
+		5C55339326725B310083A2E9 /* SendMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageCell.swift; sourceTree = "<group>"; };
+		5C55339526725B4D0083A2E9 /* ReceiveMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveMessageCell.swift; sourceTree = "<group>"; };
+		5C55339726725BCB0083A2E9 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		5C55339926725F230083A2E9 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		5C7CE24F2670B46300BE7FF7 /* WebSocketClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebSocketClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C7CE2522670B46300BE7FF7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5C7CE2542670B46300BE7FF7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -49,6 +68,8 @@
 		5C7CE2702670B46E00BE7FF7 /* WebSocketClientUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WebSocketClientUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C7CE2742670B46E00BE7FF7 /* WebSocketClientUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketClientUITests.swift; sourceTree = "<group>"; };
 		5C7CE2762670B46E00BE7FF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5C7CE2852670C70C00BE7FF7 /* UIStackView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStackView+Extension.swift"; sourceTree = "<group>"; };
+		5C7CE2862670C70C00BE7FF7 /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C7CE2842670C21B00BE7FF7 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,6 +98,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5C5533872671B14B0083A2E9 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				5C5533852671B1470083A2E9 /* User.swift */,
+				5C55338C2671FAEF0083A2E9 /* MessageData.swift */,
+				5C55338E267250750083A2E9 /* Message.swift */,
+				5C55339726725BCB0083A2E9 /* Response.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		5C55339026725B060083A2E9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5C55339126725B170083A2E9 /* MessageCell.swift */,
+				5C55339326725B310083A2E9 /* SendMessageCell.swift */,
+				5C55339526725B4D0083A2E9 /* ReceiveMessageCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		5C7CE2462670B46200BE7FF7 = {
 			isa = PBXGroup;
 			children = (
@@ -99,9 +142,14 @@
 		5C7CE2512670B46300BE7FF7 /* WebSocketClient */ = {
 			isa = PBXGroup;
 			children = (
+				5C7CE2852670C70C00BE7FF7 /* UIStackView+Extension.swift */,
+				5C7CE2862670C70C00BE7FF7 /* UIView+Extension.swift */,
 				5C7CE2522670B46300BE7FF7 /* AppDelegate.swift */,
 				5C7CE2542670B46300BE7FF7 /* SceneDelegate.swift */,
+				5C55339926725F230083A2E9 /* Utils.swift */,
+				5C5533872671B14B0083A2E9 /* Models */,
 				5C7CE2562670B46300BE7FF7 /* ViewController.swift */,
+				5C55339026725B060083A2E9 /* Views */,
 				5C7CE2582670B46300BE7FF7 /* Main.storyboard */,
 				5C7CE25B2670B46D00BE7FF7 /* Assets.xcassets */,
 				5C7CE25D2670B46D00BE7FF7 /* LaunchScreen.storyboard */,
@@ -144,6 +192,9 @@
 			dependencies = (
 			);
 			name = WebSocketClient;
+			packageProductDependencies = (
+				5C7CE2832670C21B00BE7FF7 /* SnapKit */,
+			);
 			productName = WebSocketClient;
 			productReference = 5C7CE24F2670B46300BE7FF7 /* WebSocketClient.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +266,9 @@
 				Base,
 			);
 			mainGroup = 5C7CE2462670B46200BE7FF7;
+			packageReferences = (
+				5C7CE2822670C21A00BE7FF7 /* XCRemoteSwiftPackageReference "snapkit" */,
+			);
 			productRefGroup = 5C7CE2502670B46300BE7FF7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -259,8 +313,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C7CE2572670B46300BE7FF7 /* ViewController.swift in Sources */,
+				5C55339426725B310083A2E9 /* SendMessageCell.swift in Sources */,
+				5C7CE2872670C70C00BE7FF7 /* UIStackView+Extension.swift in Sources */,
+				5C55338D2671FAEF0083A2E9 /* MessageData.swift in Sources */,
+				5C55339826725BCB0083A2E9 /* Response.swift in Sources */,
+				5C55339A26725F230083A2E9 /* Utils.swift in Sources */,
+				5C5533862671B1470083A2E9 /* User.swift in Sources */,
 				5C7CE2532670B46300BE7FF7 /* AppDelegate.swift in Sources */,
+				5C55338F267250750083A2E9 /* Message.swift in Sources */,
+				5C55339626725B4D0083A2E9 /* ReceiveMessageCell.swift in Sources */,
+				5C7CE2882670C70C00BE7FF7 /* UIView+Extension.swift in Sources */,
 				5C7CE2552670B46300BE7FF7 /* SceneDelegate.swift in Sources */,
+				5C55339226725B170083A2E9 /* MessageCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -439,6 +503,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D5AV3JUVQX;
 				INFOPLIST_FILE = WebSocketClient/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -458,6 +523,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D5AV3JUVQX;
 				INFOPLIST_FILE = WebSocketClient/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -593,6 +659,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5C7CE2822670C21A00BE7FF7 /* XCRemoteSwiftPackageReference "snapkit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/snapkit/snapkit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5C7CE2832670C21B00BE7FF7 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5C7CE2822670C21A00BE7FF7 /* XCRemoteSwiftPackageReference "snapkit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5C7CE2472670B46300BE7FF7 /* Project object */;
 }
