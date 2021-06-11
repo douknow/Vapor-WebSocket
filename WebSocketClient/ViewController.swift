@@ -183,6 +183,7 @@ class ViewController: UIViewController {
             DispatchQueue.main.sync { [self] in
                 let indexPath = IndexPath(row: messages.count - 1, section: 0)
                 tableView.insertRows(at: [indexPath], with: .automatic)
+                tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
             }
         }
     }
