@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import MobileCoreServices
 
 
 class ViewController: UIViewController {
@@ -16,12 +17,12 @@ class ViewController: UIViewController {
     var task: URLSessionWebSocketTask!
 
     let textField = UITextField()
-    let sendButton = UIButton(type: .system)
+    let imageButton = UIButton(type: .system)
     let tableView = UITableView()
 
     var messages: [Message] = [
-        Message(style: .send, content: "Hello Anna~@", user: User.users[0], time: Date()),
-        Message(style: .receive, content: "Hi Bob~.", user: User.users[0], time: Date())
+        Message(style: .send, content: .text("Hello Anna~@"), user: User.users[0], time: Date()),
+        Message(style: .receive, content: .img(URL(string: "http://localhost:8080/8AAD0977-BD23-4D37-8AB2-E204C3300C64.heic")!), user: User.users[0], time: Date())
     ]
 
     let queue = DispatchQueue(label: "com.viewcontroller.write.messages")
@@ -72,15 +73,17 @@ class ViewController: UIViewController {
 
         textField.borderStyle = .roundedRect
         textField.setContentHuggingPriority(.defaultLow - 1, for: .horizontal)
+        textField.returnKeyType = .send
+        textField.delegate = self
 
-        sendButton.setTitle("Send", for: .normal)
-        sendButton.isEnabled = false
-        sendButton.setContentCompressionResistancePriority(.defaultHigh + 1, for: .horizontal)
-        sendButton.addAction(UIAction { [unowned self] _ in
-            sendMessage(textField.text!)
+        imageButton.setImage(UIImage(systemName: "photo"), for: .normal)
+        imageButton.isEnabled = false
+        imageButton.setContentCompressionResistancePriority(.defaultHigh + 1, for: .horizontal)
+        imageButton.addAction(UIAction { [unowned self] _ in
+            showImagePicker()
         }, for: .touchUpInside)
 
-        let scv = UIStackView(views: [textField, sendButton], axis: .horizontal, spacing: 8, alignment: .center, distribution: .fill)
+        let scv = UIStackView(views: [textField, imageButton], axis: .horizontal, spacing: 8, alignment: .center, distribution: .fill)
         view.addSubview(scv) { [self] in
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
             $0.leading.trailing.equalToSuperview().inset(16)
@@ -96,7 +99,7 @@ class ViewController: UIViewController {
             .sink(receiveValue: { [unowned self] currentUser, destUser in
                 let isEnabled = (currentUser != nil) && (destUser != nil)
                 textField.isEnabled = isEnabled
-                sendButton.isEnabled = isEnabled
+                imageButton.isEnabled = isEnabled
 
                 let prompt = currentUser == nil ? "未连接" : "\(currentUser!.username), 已连接"
                 let userName = destUser?.username
@@ -117,7 +120,7 @@ class ViewController: UIViewController {
             task?.cancel()
             task = connectToChat(id: id)
             receiveMessage()
-            sendButton.isEnabled = true
+            imageButton.isEnabled = true
         }))
         ac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         present(ac, animated: true, completion: nil)
@@ -139,7 +142,7 @@ class ViewController: UIViewController {
         present(ac, animated: true, completion: nil)
     }
 
-    func sendMessage(_ content: String) {
+    func sendMessage(_ content: Message.Content) {
         guard let user = destUser, let currentUser = currentUser else {
             changeDestUser { [self] in
                 sendMessage(content)
@@ -148,7 +151,15 @@ class ViewController: UIViewController {
         }
 
         textField.text?.removeAll()
-        let msg = MessageData(to: user.id, content: content, time: Date(), user: currentUser)
+
+        let msg: MessageData
+        switch content {
+        case let .img(url):
+            msg = ImgMessageData(to: user.id, time: Date(), user: currentUser, imgURL: url)
+        case let .text(content):
+            msg = TextMessageData(to: user.id, time: Date(), user: currentUser, content: content)
+        }
+
         task.send(.string(msg.json)) { [self] error in
             if let error = error {
                 print("Send msg error: \(error)")
@@ -164,7 +175,7 @@ class ViewController: UIViewController {
         present(ac, animated: true, completion: nil)
     }
 
-    func saveMessage(_ content: String, _ style: Message.Style, _ user: User, _ time: Date) {
+    func saveMessage(_ content: Message.Content, _ style: Message.Style, _ user: User, _ time: Date) {
         queue.sync(flags: .barrier) {
             let message = Message(style: style, content: content, user: user, time: time)
             messages.append(message)
@@ -193,11 +204,13 @@ class ViewController: UIViewController {
                     switch response.type {
                     case let .info(msg):
                         print("info: \(msg)")
-                    case let .message(messageData):
-                        self.saveMessage(messageData.content, .receive, messageData.user, messageData.time)
+                    case let .text(messageData):
+                        self.saveMessage(.text(messageData.content), .receive, messageData.user, messageData.time)
+                    case let .img(messageData):
+                        self.saveMessage(.img(messageData.imgURL), .receive, messageData.user, messageData.time)
                     }
-                case let .data(data):
-                    print("Receive data")
+                case .data:
+                    break
                 @unknown default:
                     break
                 }
@@ -219,6 +232,69 @@ class ViewController: UIViewController {
         return urlComponents.url!
     }
 
+    func uploadImage(_ image: UIImage, fileName: String) -> AnyPublisher<String, NetworkError> {
+        let url = URL(string: "http://localhost:8080/upload?key=\(fileName)")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        let data = image.jpegData(compressionQuality: 0.7)
+        return Future { promise in
+            let task = URLSession.shared.uploadTask(with: request, from: data) { data, response, error in
+                if let error = error {
+                    promise(.failure(NetworkError.networkError(error)))
+                    return
+                }
+
+                guard let data = data, let result = String(data: data, encoding: .utf8) else {
+                    promise(.failure(NetworkError.noTextResponse))
+                    return
+                }
+
+                promise(.success(result))
+            }
+            task.resume()
+        }
+        .eraseToAnyPublisher()
+    }
+
+    func showImagePicker() {
+        let vc = UIImagePickerController()
+        vc.allowsEditing = false
+        vc.delegate = self
+        present(vc, animated: true, completion: nil)
+    }
+
+}
+
+extension ViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let image = info[.originalImage] as? UIImage else {
+            print("No origin image")
+            return }
+
+        uploadImage(image, fileName: "\(UUID().uuidString).heic")
+            .receive(on: DispatchQueue.main)
+            .sink { complete in
+                if case let .failure(error) = complete {
+                    print("Upload error: \(error)")
+                }
+            } receiveValue: { fileName in
+                print("Upload complete: ", fileName)
+                self.sendMessage(.img(URL(string: "http://localhost:8080/\(fileName)")!))
+            }
+            .store(in: &subscriptions)
+
+        picker.dismiss(animated: true, completion: nil)
+    }
+
+}
+
+enum NetworkError: Error {
+    case noTextResponse, networkError(Error)
 }
 
 
@@ -248,3 +324,11 @@ extension ViewController: UITableViewDataSource {
 
 
 
+extension ViewController: UITextFieldDelegate {
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        sendMessage(.text(textField.text!))
+        return true
+    }
+
+}

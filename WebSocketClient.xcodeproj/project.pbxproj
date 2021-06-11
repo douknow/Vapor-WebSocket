@@ -15,6 +15,7 @@
 		5C55339626725B4D0083A2E9 /* ReceiveMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C55339526725B4D0083A2E9 /* ReceiveMessageCell.swift */; };
 		5C55339826725BCB0083A2E9 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C55339726725BCB0083A2E9 /* Response.swift */; };
 		5C55339A26725F230083A2E9 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C55339926725F230083A2E9 /* Utils.swift */; };
+		5C55339D267345970083A2E9 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 5C55339C267345970083A2E9 /* Kingfisher */; };
 		5C7CE2532670B46300BE7FF7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7CE2522670B46300BE7FF7 /* AppDelegate.swift */; };
 		5C7CE2552670B46300BE7FF7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7CE2542670B46300BE7FF7 /* SceneDelegate.swift */; };
 		5C7CE2572670B46300BE7FF7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7CE2562670B46300BE7FF7 /* ViewController.swift */; };
@@ -77,6 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C55339D267345970083A2E9 /* Kingfisher in Frameworks */,
 				5C7CE2842670C21B00BE7FF7 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -194,6 +196,7 @@
 			name = WebSocketClient;
 			packageProductDependencies = (
 				5C7CE2832670C21B00BE7FF7 /* SnapKit */,
+				5C55339C267345970083A2E9 /* Kingfisher */,
 			);
 			productName = WebSocketClient;
 			productReference = 5C7CE24F2670B46300BE7FF7 /* WebSocketClient.app */;
@@ -268,6 +271,7 @@
 			mainGroup = 5C7CE2462670B46200BE7FF7;
 			packageReferences = (
 				5C7CE2822670C21A00BE7FF7 /* XCRemoteSwiftPackageReference "snapkit" */,
+				5C55339B267345970083A2E9 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = 5C7CE2502670B46300BE7FF7 /* Products */;
 			projectDirPath = "";
@@ -661,6 +665,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		5C55339B267345970083A2E9 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.3.0;
+			};
+		};
 		5C7CE2822670C21A00BE7FF7 /* XCRemoteSwiftPackageReference "snapkit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/snapkit/snapkit";
@@ -672,6 +684,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		5C55339C267345970083A2E9 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5C55339B267345970083A2E9 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
 		5C7CE2832670C21B00BE7FF7 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5C7CE2822670C21A00BE7FF7 /* XCRemoteSwiftPackageReference "snapkit" */;

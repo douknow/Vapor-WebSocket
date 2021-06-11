@@ -19,8 +19,12 @@ struct Message {
         case send, receive
     }
 
+    enum Content {
+        case text(String), img(URL)
+    }
+
     let style: Style
-    let content: String
+    let content: Content
     let user: User
     let time: Date
 

@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import Kingfisher
 
 
 class MessageCell: UITableViewCell {
 
+    let imgView = UIImageView()
     let label = UILabel()
     let indicatorView = UIView()
     let containerView = UIView()
@@ -33,6 +35,8 @@ class MessageCell: UITableViewCell {
     func setupViews() {
         backgroundColor = .clear
 
+        imgView.contentMode = .scaleAspectFit
+
         label.numberOfLines = 0
 
         indicatorView.transform = CGAffineTransform(rotationAngle: .pi/4)
@@ -41,10 +45,6 @@ class MessageCell: UITableViewCell {
         }
 
         containerView.layer.cornerRadius = 4
-        containerView.addSubview(label) {
-            $0.leading.trailing.equalToSuperview().inset(8)
-            $0.top.bottom.equalToSuperview().inset(8)
-        }
 
         timeLabel.font = .systemFont(ofSize: 9)
         timeLabel.textColor = .secondaryLabel
@@ -56,9 +56,27 @@ class MessageCell: UITableViewCell {
     }
 
     func config(_ message: Message) -> Self {
-        label.text = message.content
-        label.sizeToFit()
-        label.textAlignment = message.style == .receive ? .left : .right
+        imgView.removeFromSuperview()
+        label.removeFromSuperview()
+
+        switch message.content {
+        case let .img(url):
+            containerView.addSubview(imgView) {
+                $0.edges.equalToSuperview().inset(8)
+                $0.width.height.equalTo(220)
+            }
+
+            imgView.kf.setImage(with: url)
+        case let .text(content):
+            containerView.addSubview(label) {
+                $0.leading.trailing.equalToSuperview().inset(8)
+                $0.top.bottom.equalToSuperview().inset(8)
+            }
+
+            label.text = content
+            label.sizeToFit()
+            label.textAlignment = message.style == .receive ? .left : .right
+        }
 
         timeLabel.text = message.timeDes
         timeLabel.sizeToFit()

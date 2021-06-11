@@ -11,7 +11,7 @@ import Foundation
 struct Response {
 
     enum `Type` {
-        case info(String), message(MessageData)
+        case info(String), text(TextMessageData), img(ImgMessageData)
     }
 
     let json: String
@@ -36,10 +36,15 @@ struct Response {
 
             type = .info(msg)
         case 2:
-            guard let messageResponse = try? jsonDecoder.decode(Response.MessageDataResponse.self, from: data) else {
+            guard let messageResponse = try? jsonDecoder.decode(Response.TextMessageDataResponse.self, from: data) else {
                 fatalError("Response stauts")
             }
-            type = .message(messageResponse.messageData)
+            type = .text(messageResponse.messageData)
+        case 3:
+            guard let messageResponse = try? jsonDecoder.decode(Response.ImgMessageDataResponse.self, from: data) else {
+                fatalError("Response stauts")
+            }
+            type = .img(messageResponse.messageData)
         default:
             fatalError("Status invalid")
         }
@@ -50,10 +55,14 @@ struct Response {
 
 extension Response {
 
-    struct MessageDataResponse: Decodable {
+    struct TextMessageDataResponse: Decodable {
         let status: Int
+        let messageData: TextMessageData
+    }
 
-        let messageData: MessageData
+    struct ImgMessageDataResponse: Decodable {
+        let status: Int
+        let messageData: ImgMessageData
     }
 
 }
