@@ -126,6 +126,11 @@ class ViewController: UIViewController {
         present(ac, animated: true, completion: nil)
     }
 
+    func disconnect() {
+        task.cancel()
+        task = nil
+    }
+
     func changeDestUser(chooseUserCallback: (() -> Void)? = nil) {
         let ac = UIAlertController(title: "Change chat user", message: nil, preferredStyle: .actionSheet)
         User.users
@@ -193,31 +198,31 @@ class ViewController: UIViewController {
             guard let self = self else { return }
 
             switch result {
-            case let .failure(error):
-                print("Receive message occur an error: \(error)")
             case let .success(message):
                 switch message {
                 case let .string(content):
                     print("Receive MSG: \(content)")
-
-                    let response = Response(json: content)
-
-                    switch response.type {
-                    case let .info(msg):
-                        print("info: \(msg)")
-                    case let .text(messageData):
-                        self.saveMessage(.text(messageData.content), .receive, messageData.user, messageData.time)
-                    case let .img(messageData):
-                        self.saveMessage(.img(messageData.imgURL), .receive, messageData.user, messageData.time)
-                    }
-                case .data:
-                    break
-                @unknown default:
+                    self.handleContent(content)
+                    self.receiveMessage()
+                default:
                     break
                 }
+            default:
+                self.disconnect()
             }
+        }
+    }
 
-            self.receiveMessage()
+    func handleContent(_ content: String) {
+        let response = Response(json: content)
+
+        switch response.type {
+        case let .info(msg):
+            print("info: \(msg)")
+        case let .text(messageData):
+            self.saveMessage(.text(messageData.content), .receive, messageData.user, messageData.time)
+        case let .img(messageData):
+            self.saveMessage(.img(messageData.imgURL), .receive, messageData.user, messageData.time)
         }
     }
 
