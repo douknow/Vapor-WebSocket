@@ -9,12 +9,7 @@ import Foundation
 
 
 struct Message {
-    static let timeFormatter: DateFormatter = {
-        let fmt = DateFormatter()
-        fmt.dateFormat = "HH:mm:ss"
-        return fmt
-    }()
-
+    
     enum Style {
         case send, receive
     }
@@ -22,6 +17,12 @@ struct Message {
     enum Content {
         case text(String), img(URL)
     }
+
+    static let timeFormatter: DateFormatter = {
+        let fmt = DateFormatter()
+        fmt.dateFormat = "HH:mm:ss"
+        return fmt
+    }()
 
     let style: Style
     let content: Content

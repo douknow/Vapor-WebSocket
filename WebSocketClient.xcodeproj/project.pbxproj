@@ -121,6 +121,23 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		5C55339E267682D00083A2E9 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				5C7CE2562670B46300BE7FF7 /* ViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		5C55339F267682E20083A2E9 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				5C7CE2852670C70C00BE7FF7 /* UIStackView+Extension.swift */,
+				5C7CE2862670C70C00BE7FF7 /* UIView+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		5C7CE2462670B46200BE7FF7 = {
 			isa = PBXGroup;
 			children = (
@@ -144,14 +161,13 @@
 		5C7CE2512670B46300BE7FF7 /* WebSocketClient */ = {
 			isa = PBXGroup;
 			children = (
-				5C7CE2852670C70C00BE7FF7 /* UIStackView+Extension.swift */,
-				5C7CE2862670C70C00BE7FF7 /* UIView+Extension.swift */,
+				5C55339F267682E20083A2E9 /* Extensions */,
+				5C5533872671B14B0083A2E9 /* Models */,
+				5C55339026725B060083A2E9 /* Views */,
+				5C55339E267682D00083A2E9 /* ViewControllers */,
 				5C7CE2522670B46300BE7FF7 /* AppDelegate.swift */,
 				5C7CE2542670B46300BE7FF7 /* SceneDelegate.swift */,
 				5C55339926725F230083A2E9 /* Utils.swift */,
-				5C5533872671B14B0083A2E9 /* Models */,
-				5C7CE2562670B46300BE7FF7 /* ViewController.swift */,
-				5C55339026725B060083A2E9 /* Views */,
 				5C7CE2582670B46300BE7FF7 /* Main.storyboard */,
 				5C7CE25B2670B46D00BE7FF7 /* Assets.xcassets */,
 				5C7CE25D2670B46D00BE7FF7 /* LaunchScreen.storyboard */,

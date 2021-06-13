@@ -11,16 +11,21 @@ import Kingfisher
 
 class MessageCell: UITableViewCell {
 
+    // MARK: - Views
+
     let imgView = UIImageView()
     let label = UILabel()
     let indicatorView = UIView()
     let containerView = UIView()
 
-    let indicatorLen: CGFloat = 7
-
     let timeLabel = UILabel()
     let userLabel = UILabel()
     let infoSCV = UIStackView(views: [], axis: .vertical, spacing: 0, alignment: .leading, distribution: .equalSpacing)
+
+    let indicatorLen: CGFloat = 7
+
+
+    // MARK: - Initialize
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -31,6 +36,9 @@ class MessageCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+
+    // MARK: - Helper Methods
 
     func setupViews() {
         backgroundColor = .clear

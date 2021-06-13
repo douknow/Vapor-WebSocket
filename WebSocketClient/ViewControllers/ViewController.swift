@@ -12,30 +12,55 @@ import MobileCoreServices
 
 class ViewController: UIViewController {
 
-    let urlStr = "ws://127.0.0.1:8080/chat"
+    enum NetworkError: Error {
+        case noTextResponse, networkError(Error)
+    }
 
-    var task: URLSessionWebSocketTask!
+
+    enum State {
+        case ready, connecting, connected
+    }
+
+
+    // MARK: - Views
 
     let textField = UITextField()
     let imageButton = UIButton(type: .system)
     let tableView = UITableView()
 
-    var messages: [Message] = [
-        Message(style: .send, content: .text("Hello Anna~@"), user: User.users[0], time: Date()),
-        Message(style: .receive, content: .img(URL(string: "http://localhost:8080/8AAD0977-BD23-4D37-8AB2-E204C3300C64.heic")!), user: User.users[0], time: Date())
-    ]
+
+    // MARK: - Constants
+
+    let urlStr = "ws://127.0.0.1:8080/chat"
 
     let queue = DispatchQueue(label: "com.viewcontroller.write.messages")
 
     let reuseReceiveCellIdentifier = "receive-message-cell"
     let reuseSendCellIdentifier = "send-message-cell"
 
+
+    // MARK: - Properties
+
+    var task: URLSessionWebSocketTask?
+
+    var messages: [Message] = [
+        Message(style: .send, content: .text("Hello Anna~@"), user: User.users[0], time: Date()),
+        Message(style: .receive, content: .img(URL(string: "http://localhost:8080/8AAD0977-BD23-4D37-8AB2-E204C3300C64.heic")!), user: User.users[0], time: Date())
+    ]
+
+    var subscriptions = Set<AnyCancellable>()
+
+
+    // MARK: - Observable Variable
+
     @Published private var currentUser: User? = nil
 
     @Published private var destUser: User? = nil
 
-    var subscriptions = Set<AnyCancellable>()
+    @Published private var state: State = .ready
 
+
+    // MARK: - ViewController Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +68,9 @@ class ViewController: UIViewController {
         setupViews()
         setupSubscriptions()
     }
+
+
+    // MARK: - Helper Methods
 
     func setupViews() {
         let settingMenu = UIMenu(title: "", image: nil, identifier: nil, options: [.displayInline], children: [
@@ -100,13 +128,24 @@ class ViewController: UIViewController {
                 let isEnabled = (currentUser != nil) && (destUser != nil)
                 textField.isEnabled = isEnabled
                 imageButton.isEnabled = isEnabled
-
-                let prompt = currentUser == nil ? "未连接" : "\(currentUser!.username), 已连接"
-                let userName = destUser?.username
-
-                navigationItem.prompt = prompt
-                navigationItem.title = userName
+                navigationItem.title = destUser?.username
             })
+            .store(in: &subscriptions)
+
+        $state
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
+            .map { state in
+                switch state {
+                case .ready:
+                    return "未连接"
+                case .connecting:
+                    return "连接中"
+                case .connected:
+                    return "已连接"
+                }
+            }
+            .assign(to: \.navigationItem.prompt, on: self)
             .store(in: &subscriptions)
     }
 
@@ -127,8 +166,9 @@ class ViewController: UIViewController {
     }
 
     func disconnect() {
-        task.cancel()
+        task?.cancel()
         task = nil
+        state = .ready
     }
 
     func changeDestUser(chooseUserCallback: (() -> Void)? = nil) {
@@ -148,6 +188,8 @@ class ViewController: UIViewController {
     }
 
     func sendMessage(_ content: Message.Content) {
+        guard let task = task, state == .connecting else { return }
+
         guard let user = destUser, let currentUser = currentUser else {
             changeDestUser { [self] in
                 sendMessage(content)
@@ -194,6 +236,8 @@ class ViewController: UIViewController {
     }
 
     func receiveMessage() {
+        guard let task = task else { return }
+
         task.receive { [weak self] result in
             guard let self = self else { return }
 
@@ -227,8 +271,10 @@ class ViewController: UIViewController {
     }
 
     func connectToChat(id: String) -> URLSessionWebSocketTask {
-        let task = URLSession.shared.webSocketTask(with: createUrlByUser(id: id))
+        let session = URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: nil)
+        let task = session.webSocketTask(with: createUrlByUser(id: id))
         task.resume()
+        state = .connecting
         return task
     }
 
@@ -271,6 +317,9 @@ class ViewController: UIViewController {
 
 }
 
+
+// MARK: - UIImagePickerController Delegate
+
 extension ViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -299,10 +348,8 @@ extension ViewController: UINavigationControllerDelegate, UIImagePickerControlle
 
 }
 
-enum NetworkError: Error {
-    case noTextResponse, networkError(Error)
-}
 
+// MARK: - UITableView DataSource
 
 extension ViewController: UITableViewDataSource {
 
@@ -329,12 +376,30 @@ extension ViewController: UITableViewDataSource {
 }
 
 
+// MARK: - UITextField Delegate
 
 extension ViewController: UITextFieldDelegate {
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         sendMessage(.text(textField.text!))
-        return true
+        return false
+    }
+
+}
+
+
+// MARK: - URLSessionWebSocket Delegate
+
+extension ViewController: URLSessionWebSocketDelegate {
+
+    func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
+        print("Websocket handshake successful")
+        state = .connected
+    }
+
+    func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didCloseWith closeCode: URLSessionWebSocketTask.CloseCode, reason: Data?) {
+        print("Websocket close by code: \(closeCode)")
+        state = .ready
     }
 
 }
